@@ -15,8 +15,8 @@ let pageItems = 9;
 const linkList = document.querySelector("ul.link-list");
 //Gets students names
 const searchH2 = document.querySelector("h2");
-//Gets Student list
-const studentList = document.querySelector(".student-list");
+//To get element with class of "student-list"
+const studentList = document.querySelector("ul.student-list");
 //For search bar
 let searchBar = `<label for="search" class="student-search">
                   <span>Search by name</span>
@@ -40,8 +40,6 @@ function showPage(list, page) {
    let endIndex = page * pageItems;
    //variable for HTML to be inserted
    let studentItem = ""; 
-   //To get element with class of "student-list"
-   const studentList = document.querySelector("ul.student-list");
    //Clears studentListVariable
    studentList.innerHTML = "";
    
@@ -88,8 +86,20 @@ function addPagination(list) {
       linkList.insertAdjacentHTML("beforeend", button);
    }
    document.querySelector(".link-list button").classList.add("active");
-}
 
+   //Event listener for pagination buttons
+   linkList.addEventListener('click', (e) => {
+      if(e.target.tagName === "BUTTON") {
+         //Gets button with "active" class
+         const activeBtn = document.querySelector(".active");
+         if (activeBtn) {
+            activeBtn.className = "";
+         }
+         e.target.classList.add("active");
+         showPage(list, e.target.textContent);
+      }
+   });
+}
 
 // Call functions
 //Inserts search bar
@@ -101,6 +111,7 @@ addPagination(data);
 /*----------------------------------------------------
   Event listener for search box input and function call
 ------------------------------------------------------*/
+
 document.getElementById("search").addEventListener("keyup", e => {
    //Gets input and continuously saves to "input"
     let input = document.getElementById("search").value;
@@ -127,33 +138,6 @@ document.getElementById("search").addEventListener("keyup", e => {
    } else {
       studentList.innerHTML = "<h1>Sorry, no students found</h1>";
       linkList.innerHTML = "";
-   }
-
-   let searchList = document.querySelector("ul.link-list");
-   //Event listener for pagination buttons during search
-   searchList.addEventListener('click', (e) => {
-      
-      if(e.target.tagName === "BUTTON") {
-         //Gets button with "active" class
-         const activeBtn = document.querySelector(".active");
-         activeBtn.className = "";
-         e.target.classList.add("active");
-         showPage(searchArray, e.target.textContent);
-      }
-   });
-});
-
-
-//Event listener for pagination buttons
-linkList.addEventListener('click', (e) => {
-   if(e.target.tagName === "BUTTON") {
-      //Gets button with "active" class
-      const activeBtn = document.querySelector(".active");
-      if (activeBtn) {
-         activeBtn.className = "";
-      }
-      e.target.classList.add("active");
-      showPage(data, e.target.textContent);
    }
 });
 
